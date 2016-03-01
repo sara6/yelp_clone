@@ -9,38 +9,50 @@ feature 'restaurants' do
     end
   end
 
-  context 'restaurants have been added' do
-  before do
-    Restaurant.create(name: 'KFC')
+    context 'restaurants have been added' do
+    before do
+      Restaurant.create(name: 'KFC')
+    end
+
+    scenario 'display restaurants' do
+      visit '/restaurants'
+      expect(page).to have_content('KFC')
+      expect(page).not_to have_content('No restaurants yet')
+    end
   end
 
-  scenario 'display restaurants' do
-    visit '/restaurants'
-    expect(page).to have_content('KFC')
-    expect(page).not_to have_content('No restaurants yet')
+  context 'creating restaurants' do
+    scenario 'prompts user to fill out a form, then displays the new restaurant' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+      expect(page).to have_content 'KFC'
+      expect(current_path).to eq '/restaurants'
+    end
   end
-end
 
-context 'creating restaurants' do
-  scenario 'prompts user to fill out a form, then displays the new restaurant' do
-    visit '/restaurants'
-    click_link 'Add a restaurant'
-    fill_in 'Name', with: 'KFC'
-    click_button 'Create Restaurant'
-    expect(page).to have_content 'KFC'
-    expect(current_path).to eq '/restaurants'
+  context 'viewing restaurants' do
+    let!(:pret){Restaurant.create(name: 'pret')}
+
+    scenario 'lets a user view a restaurant' do
+      visit '/restaurants'
+      click_link 'pret'
+      expect(page).to have_content 'pret'
+      expect(current_path).to eq "/restaurants/#{pret.id}"
+    end
   end
-end
 
-context 'viewing restaurants' do
-  let!(:pret){Restaurant.create(name: 'pret')}
-
-  scenario 'lets a user view a restaurant' do
-    visit '/restaurants'
-    click_link 'pret'
-    expect(page).to have_content 'pret'
-    expect(current_path).to eq "/restaurants/#{pret.id}"
+  context 'editing restaurants' do
+    before { Restaurant.create name: 'pret'}
+    scenario 'let a user edit a restaurant' do
+      visit '/restaurants'
+      click_link 'Edit pret'
+      fill_in 'Name', with: 'pret'
+      click_button 'Update Restaurant'
+      expect(page).to have_content 'pret'
+      expect(current_path).to eq '/restaurants'
+    end
   end
-end
 
 end
