@@ -5,6 +5,7 @@ ruby '2.2.3';
 group :test do
     gem 'rspec-rails'
     gem 'capybara'
+    gem 'shoulda'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
