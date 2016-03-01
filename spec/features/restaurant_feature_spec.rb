@@ -32,4 +32,15 @@ context 'creating restaurants' do
   end
 end
 
+context 'viewing restaurants' do
+  let!(:pret){Restaurant.create(name: 'pret')}
+
+  scenario 'lets a user view a restaurant' do
+    visit '/restaurants'
+    click_link 'pret'
+    expect(page).to have_content 'pret'
+    expect(current_path).to eq "/restaurants/#{pret.id}"
+  end
+end
+
 end
