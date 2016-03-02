@@ -12,6 +12,12 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
+
+  config.secret_key = '8236d124660cd249158f58126822eb0f77d77e3a2a48b821e9e41b5cbf1c608e6a755dce59f14dcd1e49ac2793b83a695e8a850edcc1a3bd54bb09f586bf2121'
+  #
+  # config.omniauth :facebook, Rails.application.secrets.facebook_app_id, Rails.application.secrets.facebook_app_secret,
+  #               callback_url: "http://localhost3000/"
+
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
   # Configure the class responsible to send e-mails.
@@ -262,4 +268,8 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  config.omniauth :facebook, Rails.application.secrets.facebook_app_id,
+  Rails.application.secrets.facebook_app_secret
+  
 end
