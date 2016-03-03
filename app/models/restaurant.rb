@@ -11,4 +11,8 @@ class Restaurant < ActiveRecord::Base
   #   review
   # end
 
+  def owned_by?(user)
+    user == self.user
+  end
+
 end

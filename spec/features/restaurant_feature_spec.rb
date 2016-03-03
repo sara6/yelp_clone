@@ -111,7 +111,6 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before {Restaurant.create name: 'pret'}
 
     scenario 'removes a restaurant when a user clicks a delete link' do
       visit '/restaurants'
@@ -120,10 +119,34 @@ feature 'restaurants' do
       fill_in 'user_password', with: 'password1245'
       fill_in 'user_password_confirmation', with: 'password1245'
       click_button 'Sign up'
-      click_link 'Delete pret'
-      expect(page).not_to have_content 'pret'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'bob'
+      click_button 'Create Restaurant'
+      click_link 'Delete bob'
+      expect(page).not_to have_content 'bob'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+
+    scenario 'user can only delete a restaurant they have created' do
+      visit '/restaurants'
+      click_link 'Sign up'
+      fill_in 'user_email', with: 'loulou@lala.com'
+      fill_in 'user_password', with: 'password1245'
+      fill_in 'user_password_confirmation', with: 'password1245'
+      click_button 'Sign up'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'mini eggs'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      click_link 'Sign up'
+      fill_in 'user_email', with: 'sarah@lala.com'
+      fill_in 'user_password', with: 'password12345'
+      fill_in 'user_password_confirmation', with: 'password12345'
+      click_button 'Sign up'
+      click_link 'Delete mini eggs'
+      expect(page).to have_content 'Cannot delete restaurant you have not added'
+    end
+
   end
 
 end
