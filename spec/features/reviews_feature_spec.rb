@@ -26,14 +26,19 @@ feature 'reviewing' do
   end
 
   scenario 'user can only leave 1 review per restaurant' do
-    visit '/restaurants'
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
     click_link 'Review pret'
     fill_in "Thoughts", with: "so so"
     select '3', from: 'Rating'
     click_button 'Leave Review'
     expect(current_path).to eq '/restaurants'
     click_link 'Review pret'
-    expect(page).to have_content 'Cannot leave 2 reviews'
+    expect(page).to have_content 'has reviewed this restaurant already'
   end
 
 end
