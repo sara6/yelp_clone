@@ -45,16 +45,12 @@ class RestaurantsController < ApplicationController
 
   def destroy
     @restaurant = Restaurant.find(params[:id])
-    byebug
     if @restaurant.owned_by?(current_user)
-      byebug
       @restaurant.destroy
       flash[:notice] = "Restaurant deleted successfully"
     else
-      byebug
       flash[:notice] = "Cannot delete restaurant you have not added"
     end
-    byebug
     redirect_to restaurants_path
   end
 

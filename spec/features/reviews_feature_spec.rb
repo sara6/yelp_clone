@@ -41,4 +41,19 @@ feature 'reviewing' do
     expect(page).to have_content 'has reviewed this restaurant already'
   end
 
+  scenario 'user can only delete their review' do
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+    click_link 'Review pret'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    click_link 'Delete Review'
+    expect(page).to have_content 'Review deleted'
+  end
+
 end
