@@ -33,8 +33,13 @@ class RestaurantsController < ApplicationController
 
   def update
     @restaurant = Restaurant.find(params[:id])
-    @restaurant.update(restaurant_params)
-    redirect_to '/restaurants'
+    if current_user == @restaurant.user
+      @restaurant.update(restaurant_params)
+    else
+      flash[:notice] = "Unauthorised edit"
+    end
+    redirect_to restaurants_path
+
   end
 
   def destroy

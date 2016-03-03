@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   devise :omniauthable, :omniauth_providers => [:facebook]
-
+  has_many :restaurants
   has_many :reviews
   has_many :reviewed_restaurants, through: :reviews, source: :restaurant
 

@@ -86,6 +86,28 @@ feature 'restaurants' do
       expect(page).to have_content 'pret'
       expect(current_path).to eq '/restaurants'
     end
+
+    scenario 'user can only edit a restaurant they have created' do
+      visit '/restaurants'
+      click_link 'Sign up'
+      fill_in 'user_email', with: 'loulou@lala.com'
+      fill_in 'user_password', with: 'password1245'
+      fill_in 'user_password_confirmation', with: 'password1245'
+      click_button 'Sign up'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'mini eggs'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      click_link 'Sign up'
+      fill_in 'user_email', with: 'sarah@lala.com'
+      fill_in 'user_password', with: 'password12345'
+      fill_in 'user_password_confirmation', with: 'password12345'
+      click_button 'Sign up'
+      click_link 'Edit mini eggs'
+      click_button 'Update Restaurant'
+      expect(page).to have_content 'Unauthorised edit'
+    end
+
   end
 
   context 'deleting restaurants' do
