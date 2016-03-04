@@ -3,6 +3,39 @@ require 'rails_helper'
 feature 'reviewing' do
   before {Restaurant.create name: 'pret'}
 
+  # def leave_review(thoughts, rating)
+  #   visit '/restaurants'
+  #   click_link 'Review pret'
+  #   fill_in 'Thoughts', with: thoughts
+  #   select rating, from: 'Rating'
+  #   click_button 'Leave Review'
+  # end
+
+  scenario 'displays an average rating for all reviews' do
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'lala@example.com')
+    fill_in('Password', with: 'testtest123')
+    fill_in('Password confirmation', with: 'testtest123')
+    click_button('Sign up')
+    click_link 'Review pret'
+    fill_in "Thoughts", with: "so so"
+    select '1', from: 'Rating'
+    click_button 'Leave Review'
+    click_link 'Sign out'
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+    click_link 'Review pret'
+    fill_in "Thoughts", with: "so so"
+    select '5', from: 'Rating'
+    click_button 'Leave Review'
+    expect(page).to have_content('Average rating: 3')
+  end
+
   scenario 'allows users to leave a review using a form' do
     visit('/')
     click_link('Sign up')
@@ -10,10 +43,6 @@ feature 'reviewing' do
     fill_in('Password', with: 'testtest')
     fill_in('Password confirmation', with: 'testtest')
     click_button('Sign up')
-    # click_link 'Sign in'
-    # fill_in('Email', with: 'lalala.com')
-    # fill_in('Password', with: 'password123456')
-    # click_button 'Log in'
     click_link 'Add a restaurant'
     fill_in 'Name', with: 'Pret'
     click_button 'Create Restaurant'
