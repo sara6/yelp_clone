@@ -20,7 +20,7 @@ feature 'reviewing' do
     click_button('Sign up')
     click_link 'Review pret'
     fill_in "Thoughts", with: "so so"
-    select '1', from: 'Rating'
+    select '3', from: 'Rating'
     click_button 'Leave Review'
     click_link 'Sign out'
     visit('/')
@@ -33,7 +33,7 @@ feature 'reviewing' do
     fill_in "Thoughts", with: "so so"
     select '5', from: 'Rating'
     click_button 'Leave Review'
-    expect(page).to have_content('Average rating: 3')
+    expect(page).to have_content('Average rating: ★★★★☆')
   end
 
   scenario 'allows users to leave a review using a form' do
